@@ -1,5 +1,4 @@
-import { fromEvent, throttleTime, scan, tap, toArray, map, filter, from } from 'rxjs';
-import { pluck } from 'rxjs/operators';
+import { fromEvent, throttleTime, scan, filter } from 'rxjs';
 import { v4 } from 'uuid';
 
 const note = document.getElementById("note")
@@ -27,11 +26,12 @@ const addNote = fromEvent(btn, "click")
 
 clicks.pipe(
   filter(e => e.target.tagName === "LI"),
-).subscribe((li) => li.target.remove())
+).subscribe((li) => {
+  li.target.remove()
+})
 
 const subscription = addNote.subscribe((notes) => {
   while (lists.firstChild) lists.removeChild(lists.firstChild);
   notes.map((note) => lists.appendChild(createList(note)))
   note.value = ""
-
 })
